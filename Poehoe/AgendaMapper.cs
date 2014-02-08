@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Poehoe
 {
@@ -32,6 +33,15 @@ namespace Poehoe
             internal set;
         }
 
+        public string Actie
+        {
+            get;
+            internal set;
+        }
+
+        public string Bericht
+        { get; internal set; }
+
         public int Lesuur
         {
             get;
@@ -47,8 +57,33 @@ namespace Poehoe
             private set;
         }
 
-        public AgendaMapper(BinairFormaat Formaat)
+        public Dictionary<DateTime, List<AgendaItem>> DataItems
         {
+            get;
+            private set;
+        }
+
+        public static AgendaMapper GetData(string Data, User User)
+        {
+            XDocument d = XDocument.Parse(Data);
+            var LolData = Convert.FromBase64String(d.Descendants(User.tempuri + "VulAgendaCDSResult").First().Value);
+            BinairFormaat For = new BinairFormaat(LolData);
+            return new AgendaMapper(For, User);
+            
+        }
+
+        public AgendaMapper(BinairFormaat Formaat, User User)
+        {
+            Dictionary<int, string> TypeMappings = new Dictionary<int, string>();
+            TypeMappings[0] = "Niks";
+            foreach (var Item in User.InitData.Descendants(User.d2p1 + "AgendaLessoort"))
+            {
+                var Lessoort = int.Parse(Item.Descendants(User.d2p1 + "IdAgendaLessoort").First().Value);
+                var Omschrijving = Item.Descendants(User.d2p1 + "Omschrijving").First().Value;
+
+                TypeMappings[Lessoort] = Omschrijving;
+            }
+
             Dictionary<string, int> Mappings = new Dictionary<string, int>(Formaat.Fields.Count);
             for (var i = 0; i < Formaat.Fields.Count; i++)
             {
@@ -67,9 +102,18 @@ namespace Poehoe
                     Item.End = (DateTime)AgIt.Objects[Mappings["dFinish"]];
                     Item.Lokatie = AgIt.Objects[Mappings["Lokatie"]] as string;
                     Item.Beschrijving = AgIt.Objects[Mappings["Omschrijving"]] as string;
+                    Item.Actie = TypeMappings[(int)AgIt.Objects[Mappings["idAgendalessoort"]]];
+                    Item.Bericht = AgIt.Objects[Mappings["Bericht"]] as string;
                     Item.Lesuur = i;
                     AgendaItems.Add(Item);
                 }
+            }
+            DataItems = new Dictionary<DateTime, List<AgendaItem>>();
+            foreach (var item in AgendaItems)
+            {
+                if (!DataItems.ContainsKey(item.Start.Date))
+                    DataItems[item.Start.Date] = new List<AgendaItem>();
+                DataItems[item.Start.Date].Add(item);
             }
         }
     }

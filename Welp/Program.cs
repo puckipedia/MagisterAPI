@@ -22,10 +22,7 @@ namespace Welp
             T.Wait();
             var Req = AgendaRequest.Create(new DateTime(2014, 02, 2), new DateTime(2014, 02, 7), T.Result, "118556").Send(T.Result);
             Req.Wait();
-            XDocument d = XDocument.Parse(Req.Result);
-            var LolData = Convert.FromBase64String(d.Descendants(User.tempuri + "VulAgendaCDSResult").First().Value);
-            BinairFormaat For = new BinairFormaat(LolData);
-            var Am = new AgendaMapper(For);
+            var Am = AgendaMapper.GetData(Req.Result, T.Result);
 
             Console.ReadLine();
         }
