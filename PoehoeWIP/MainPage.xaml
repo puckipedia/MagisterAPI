@@ -1,0 +1,48 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="PoehoeWIP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="Portable User Interface"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+	<phone:PhoneApplicationPage.Resources>
+		<DataTemplate x:Key="LesTemplate">
+			<Grid d:DesignWidth="534.925" d:DesignHeight="137.91" Height="125">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="125"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Lesuur}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Grid.Row="1"/>
+				<TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Beschrijving}" FontFamily="Portable User Interface" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+				<StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
+					<TextBlock TextWrapping="Wrap" Text="{Binding Actie}" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Lokatie}" FontFamily="Portable User Interface" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}"/>
+				</StackPanel>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="LesLijstTemplate">
+			<phone:LongListSelector d:DesignWidth="266.667" d:DesignHeight="50.667" ItemTemplate="{StaticResource LesTemplate}" ItemsSource="{Binding Value}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="HeaderTemplate">
+			<Grid>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Key,StringFormat=dddd}" Style="{StaticResource PhoneTextTitle1Style}"/>
+			</Grid>
+		</DataTemplate>
+	</phone:PhoneApplicationPage.Resources>
+	<phone:Pivot Title="pivot" ItemTemplate="{StaticResource LesLijstTemplate}" ItemsSource="{Binding DataItems}" HeaderTemplate="{StaticResource HeaderTemplate}"/>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+
+</phone:PhoneApplicationPage>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,19 +22,12 @@ namespace Poehoe
             private set;
         }
 
-        /// <summary>
-        /// The version of the school
-        /// </summary>
-        public string SchoolVersion
-        {
-            get
-            {
-                _getSchoolVersionTask.Wait();
-                return _getSchoolVersionTask.Result;
-            }
-        }
-
         private Task<string> _getSchoolVersionTask;
+
+        public async Task<string> SchoolVersion()
+        {
+            return await _getSchoolVersionTask;
+        }
 
         /// <summary>
         /// Create a school object
@@ -45,13 +39,20 @@ namespace Poehoe
             _getSchoolVersionTask = GetSchoolVersion();
         }
 
+        public async Task<bool> LoadSchoolVersion()
+        {
+            var version = await GetSchoolVersion();
+            return version != null;
+        }
+
         /// <summary>
         /// Get a school version
         /// </summary>
         /// <returns>The version the school runs</returns>
         private async Task<string> GetSchoolVersion()
         {
-            HttpWebRequest Request = WebRequest.Create(String.Format("https://{0}.swp.nl", SchoolNaam)) as HttpWebRequest;
+            HttpWebRequest Request = WebRequest.Create(String.Format("http://{0}.swp.nl/", SchoolNaam)) as HttpWebRequest;
+            Request.Method = "GET";
             var Response = await Request.GetResponseAsync();
             return Response.ResponseUri.AbsolutePath.Split('/')[1];
         }

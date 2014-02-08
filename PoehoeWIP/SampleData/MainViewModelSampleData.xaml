@@ -1,0 +1,8 @@
+﻿<vm:MainViewModel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:PoehoeWIP.ViewModels"
+    SampleProperty="Sample Text Property Value">
+<!-- Dit is wat xml code, en heeft geen echte betekenis
+    !-->
+</vm:MainViewModel>

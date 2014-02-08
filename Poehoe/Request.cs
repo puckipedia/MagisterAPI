@@ -30,15 +30,13 @@ namespace Poehoe
 
         public async Task<string> Send(User U)
         {
-            using (var Client = new HttpClient())
-            {
+            await U.SetBaseAddress();
                 ByteArrayContent C = new ByteArrayContent(Crypto.EncryptRequest(this));
                 C.Headers.Add("soapaction", "\"" + SoapAction + "\"");
                 C.Headers.Add("content-type", "text/xml; charset=utf-8");
                 var Req = await U._client.PostAsync(String.Format("{0}Service.svc", this.Service), C);
                 var ba = await Req.Content.ReadAsByteArrayAsync();
                 return Crypto.DecryptResponse(ba);
-            }
         }
     }
 }

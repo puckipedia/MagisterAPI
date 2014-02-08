@@ -38,7 +38,13 @@ namespace Poehoe
         internal User(School S)
         {
             School = S;
-            _client.BaseAddress = new Uri(String.Format("https://{0}.swp.nl/{1}/WCFServices/", School.SchoolNaam, School.SchoolVersion));
+            SetBaseAddress();
+        }
+
+        internal async Task SetBaseAddress()
+        {
+            if (_client.BaseAddress == null)
+                _client.BaseAddress = new Uri(String.Format("https://{0}.swp.nl/{1}/WCFServices/", School.SchoolNaam, await School.SchoolVersion()));
         }
 
         internal HttpClient _client = new HttpClient();

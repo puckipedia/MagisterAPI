@@ -17,7 +17,6 @@ namespace Welp
             Poehoe.Crypto.ZipKey = "yawUBRu+reduka5UPha2#=cRUc@ThekawEvuju&?g$dru9ped=a@REQ!7h_?anut";
             Poehoe.Crypto.AesCrypto = new AesCrypto();
             var Sch = new School("chrlyceumdelft");
-            Console.WriteLine("Poehoe connecting to {0} version {1}", Sch.SchoolNaam, Sch.SchoolVersion);
             var T = Sch.Login("118556", "$PASS");
             T.Wait();
             var Req = AgendaRequest.Create(new DateTime(2014, 02, 2), new DateTime(2014, 02, 7), T.Result, "118556").Send(T.Result);
