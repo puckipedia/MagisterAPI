@@ -55,5 +55,27 @@ namespace Poehoe
             var Response = await Request.GetResponseAsync();
             return Response.ResponseUri.AbsolutePath.Split('/')[1];
         }
+
+        /// <summary>
+        /// The Client GUID used for authenticating
+        /// </summary>
+        public Guid ClientGuid
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Login to Magister
+        /// </summary>
+        /// <param name="Username">The username to login with</param>
+        /// <param name="Password">The password to login with</param>
+        /// <returns>The user that logged in</returns>
+        public async Task<User> Login(string Username, string Password)
+        {
+            User U = new User(this);
+            await U.GetInfo(Username, Password);
+            return U;
+        }
     }
 }
