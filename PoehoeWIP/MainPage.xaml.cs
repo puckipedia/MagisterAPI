@@ -12,6 +12,9 @@ using Poehoe;
 using Welp;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Diagnostics;
+using System.IO.IsolatedStorage;
+using System.Threading;
 
 namespace PoehoeWIP
 {
@@ -19,6 +22,23 @@ namespace PoehoeWIP
     {
         School School;
         User User;
+
+        public class Data
+        {
+            public AgendaMapper Mapper
+            {
+                get;
+                set;
+            }
+
+            public string Title
+            {
+                get;
+                set;
+            }
+        }
+        DateTime StartOfWeek;
+
         // Constructor
         public MainPage()
         {
@@ -32,46 +52,112 @@ namespace PoehoeWIP
 
 
             //DoStuff(DateTime.Today).Wait();
-            this.Loaded += MainPage_Loaded;
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
-        }
 
-        async void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            System.Globalization.CultureInfo ci =
-                System.Threading.Thread.CurrentThread.CurrentCulture;
-            DayOfWeek fdow = ci.DateTimeFormat.FirstDayOfWeek;
+            DayOfWeek fdow = DayOfWeek.Monday;
             DayOfWeek today = DateTime.Now.DayOfWeek;
             DateTime sow = DateTime.Now.AddDays(-(today - fdow)).Date;
-            await DoStuff(sow);
+            StartOfWeek = sow;
         }
 
         public async Task DoStuff(DateTime Week)
         {
-            School = School ?? new School("chrlyceumdelft");
+            var WeekNum = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(Week, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            var PI = new ProgressIndicator()
+            {
+                IsIndeterminate = false,
+                Text = "Loading week " + WeekNum,
+                Value = 0,
+                IsVisible = true
+            };
+            try
+            {
 
-            await School.SchoolVersion();
+                SystemTray.SetProgressIndicator(this, PI);
 
-            User = User ?? await School.Login("118556", "$PASS");
+                var A = IsolatedStorageSettings.ApplicationSettings;
+                var Username = A["Username"] as string;
+                var Password = A["Password"] as string;
+                var SchoolText = A["School"] as string;
 
-            DateTime Start = Week;
-            DateTime End = Week.AddDays(4);
-            string Stamnummer = "118556";
+                if (School != null && School.SchoolNaam != SchoolText)
+                {
+                    School = null;
+                    User = null;
+                }
 
-            var Requ = await AgendaRequest.Create(Start, End, User, Stamnummer).Send(User);
+                if (User != null && User.Username != Username)
+                    User = null;
 
-            AgendaMapper Mapper = AgendaMapper.GetData(Requ, User);
-            this.DataContext = Mapper;
+                School = School ?? new School(SchoolText);
+
+                await School.SchoolVersion();
+
+                PI.Value = 0.25;
+
+                User = User ?? await School.Login(Username, Password);
+
+                var Data = await User.GetLeerlingData();
+
+                PI.Value = 0.5;
+
+                DateTime Start = Week;
+                DateTime End = Week.AddDays(4);
+                string Stamnummer = Data.stamnr + "";
+
+                var Requ = await AgendaRequest.Create(Start, End, User, Stamnummer).Send(User);
+
+                PI.Value = 0.75;
+
+                AgendaMapper Mapper = AgendaMapper.GetData(Requ, User);
+                if(Week == StartOfWeek)
+                    this.DataContext = new Data() { Title = "Week " + WeekNum, Mapper = Mapper };
+
+                PI.Value = 1;
+
+                await Task.Delay(2000);
+                PI.IsVisible = false;
+            }
+            catch (Exception e)
+            {
+                PI.Text = "Error updating!";
+                Thread.Sleep(2000);
+                PI.IsVisible = false;
+            }
+        }
+
+        internal static AgendaItem AgItem;
+
+        protected void GetInfo(object sender, RoutedEventArgs e)
+        {
+            MenuItem I = (MenuItem)sender;
+            var A = (AgendaItem)I.DataContext;
+            AgItem = A;
+            NavigationService.Navigate(new Uri("/Info.xaml", UriKind.Relative));
         }
 
         // Load data for the ViewModel Items
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
-            }
+            await DoStuff(StartOfWeek);
+        }
+
+        private async void VorigeWeek(object sender, EventArgs e)
+        {
+            StartOfWeek = StartOfWeek.AddDays(-7);
+            await DoStuff(StartOfWeek);
+        }
+
+        private async void VolgendeWeek(object sender, EventArgs e)
+        {
+            StartOfWeek = StartOfWeek.AddDays(7);
+            await DoStuff(StartOfWeek);
+        }
+
+        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
         // Sample code for building a localized ApplicationBar

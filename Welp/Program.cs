@@ -1,6 +1,7 @@
 ﻿using Poehoe;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,18 @@ namespace Welp
             Poehoe.Crypto.AesKey = "087EC4624E964AE27DBDFE03279A2EE4";
             Poehoe.Crypto.ZipKey = "yawUBRu+reduka5UPha2#=cRUc@ThekawEvuju&?g$dru9ped=a@REQ!7h_?anut";
             Poehoe.Crypto.AesCrypto = new AesCrypto();
-            var Sch = new School("chrlyceumdelft");
-            var T = Sch.Login("118556", "$PASS");
+            var Sch = new School("$SCHOOL");
+            var T = Sch.Login("$USER", "$PASS");
             T.Wait();
-            var Req = AgendaRequest.Create(new DateTime(2014, 02, 2), new DateTime(2014, 02, 7), T.Result, "118556").Send(T.Result);
-            Req.Wait();
-            var Am = AgendaMapper.GetData(Req.Result, T.Result);
+            var DDFR = GetLeerlingenDataRequest.Create(T.Result, new int[] {int.Parse(T.Result.InitData.Descendants(User.d2p1+"MijnTabelID").First().Value)}).Send(T.Result);
+            DDFR.Wait();
+            XDocument D = XDocument.Parse(DDFR.Result);
+            var Data = new BinairFormaat(Convert.FromBase64String(D.Descendants(User.tempuri + "GetLeerlingenDataResult").First().Value));
+            foreach(var F in Data.Fields) {
+                Debug.WriteLine("public object {0} {1}\n\tget;\n\tprivate set;\n{2}", F.Name, "{", "}");
 
-            Console.ReadLine();
+            }
+             Console.ReadLine();
         }
     }
 }

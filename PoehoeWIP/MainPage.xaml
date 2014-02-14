@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -12,25 +13,56 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
-	<phone:PhoneApplicationPage.Resources>
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="{StaticResource PhoneAccentColor}" shell:SystemTray.BackgroundColor="{StaticResource PhoneBackgroundColor}" Margin="3,0,-3,0">
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    <phone:PhoneApplicationPage.Resources>
 		<DataTemplate x:Key="LesTemplate">
-			<Grid d:DesignWidth="534.925" d:DesignHeight="137.91" Height="125">
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
+            <Grid d:DesignWidth="534.925" d:DesignHeight="137.91" Height="125">
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu IsZoomEnabled="True" x:Name="ContextMenu" >
+                        <toolkit:MenuItem x:Name="Info" Header="Raw Info" Click="GetInfo"/>
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="125"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-				<TextBlock TextWrapping="Wrap" Text="{Binding Lesuur}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Grid.Row="1"/>
-				<TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Beschrijving}" FontFamily="Portable User Interface" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0" FontSize="{StaticResource PhoneFontSizeLarge}"/>
-				<StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
-					<TextBlock TextWrapping="Wrap" Text="{Binding Actie}" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                    <TextBlock TextWrapping="Wrap" Text="{Binding Lokatie}" FontFamily="Portable User Interface" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}"/>
-				</StackPanel>
-			</Grid>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Lesuur}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"/>
+				<TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Beschrijving}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+	    			<StackPanel Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Start,StringFormat=hh:mm}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock TextWrapping="Wrap" Text="-" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding End,StringFormat=hh:mm}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Lokatie}" Style="{StaticResource PhoneTextAccentStyle}"/>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Actie}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </StackPanel>
+            </Grid>
 		</DataTemplate>
 		<DataTemplate x:Key="LesLijstTemplate">
 			<phone:LongListSelector d:DesignWidth="266.667" d:DesignHeight="50.667" ItemTemplate="{StaticResource LesTemplate}" ItemsSource="{Binding Value}"/>
@@ -41,7 +73,14 @@
 			</Grid>
 		</DataTemplate>
 	</phone:PhoneApplicationPage.Resources>
-	<phone:Pivot Title="pivot" ItemTemplate="{StaticResource LesLijstTemplate}" ItemsSource="{Binding DataItems}" HeaderTemplate="{StaticResource HeaderTemplate}"/>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar>
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/back.png" Text="Vorige" Click="VorigeWeek"/>
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/feature.settings.png" IsEnabled="True" Text="Settings" Click="ApplicationBarIconButton_Click"/>
+			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/next.png" Text="Volgende" Click="VolgendeWeek"/>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
+	<phone:Pivot Title="{Binding Title}" ItemTemplate="{StaticResource LesLijstTemplate}" ItemsSource="{Binding Mapper.DataItems}" HeaderTemplate="{StaticResource HeaderTemplate}"/>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
 

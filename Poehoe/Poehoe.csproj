@@ -42,7 +42,10 @@
     <Compile Include="BinairFormaat.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="Crypto.cs" />
+    <Compile Include="GetDDScreenLL.cs" />
+    <Compile Include="DDFieldsRequest.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="GetLeerlingenDataRequest.cs" />
     <Compile Include="ICrypto.cs" />
     <Compile Include="InitDataRequest.cs" />
     <Compile Include="LoginRequest.cs" />
