@@ -2717,7 +2717,7 @@ namespace Ionic.Zip
         private bool _skippedDuringSave;
         private UInt32 _diskNumber;
 
-        private static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("UTF8");
+        private static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("UTF-8");
         //private System.Text.Encoding _provisionalAlternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
         private System.Text.Encoding _actualEncoding;
 
