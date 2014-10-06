@@ -30,20 +30,9 @@ namespace PoehoeZipWin32
 
         public static byte[] ToByteArray(string HexString)
         {
-            try
-            {
-                int NumberChars = HexString.Length;
-                byte[] bytes = new byte[NumberChars / 2];
-                for (int i = 0; i < NumberChars; i += 2)
-                {
-                    bytes[i / 2] = Convert.ToByte(HexString.Substring(i, 2), 16);
-                }
-                return bytes;
-            }
-            catch (Exception E)
-            {
-                return null;
-            }
+            byte[] bytes = new byte[HexString.Length * sizeof(char)];
+            System.Buffer.BlockCopy(HexString.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
         }
 
         public byte[] Decrypt(byte[] Data, byte[] Key)

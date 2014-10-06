@@ -17,8 +17,8 @@ namespace Welp
             Poehoe.Crypto.AesKey = "087EC4624E964AE27DBDFE03279A2EE4";
             Poehoe.Crypto.ZipKey = "yawUBRu+reduka5UPha2#=cRUc@ThekawEvuju&?g$dru9ped=a@REQ!7h_?anut";
             Poehoe.Crypto.AesCrypto = new AesCrypto();
-            var Sch = new School("$SCHOOL");
-            var T = Sch.Login("$USER", "$PASS");
+            var Sch = new School("praedinius");
+            var T = Sch.Login("3283", "boerboerboer");
             T.Wait();
             var DDFR = GetLeerlingenDataRequest.Create(T.Result, new int[] {int.Parse(T.Result.InitData.Descendants(User.d2p1+"MijnTabelID").First().Value)}).Send(T.Result);
             DDFR.Wait();
