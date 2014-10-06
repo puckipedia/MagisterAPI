@@ -131,9 +131,9 @@
     <Compile Include="ZipCrypto.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Poehoe\Poehoe.csproj">
+    <ProjectReference Include="..\Poehoe\MagisterAPI.csproj">
       <Project>{04718B06-D7C3-4B43-BB58-85F0179E81EB}</Project>
-      <Name>Poehoe</Name>
+      <Name>MagisterAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

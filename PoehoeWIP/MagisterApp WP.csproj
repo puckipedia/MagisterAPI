@@ -186,13 +186,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoehoeZipWinPhone\PoehoeZipWinPhone.csproj">
+    <ProjectReference Include="..\PoehoeZipWinPhone\Magister ZIPWinP.csproj">
       <Project>{D3FEDAC1-A25A-4039-83B8-B1F8F8C032D6}</Project>
-      <Name>PoehoeZipWinPhone</Name>
+      <Name>Magister ZIPWinP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Poehoe\Poehoe.csproj">
+    <ProjectReference Include="..\Poehoe\MagisterAPI.csproj">
       <Project>{04718B06-D7C3-4B43-BB58-85F0179E81EB}</Project>
-      <Name>Poehoe</Name>
+      <Name>MagisterAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

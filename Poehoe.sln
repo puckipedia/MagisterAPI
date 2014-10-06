@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poehoe", "Poehoe\Poehoe.csproj", "{04718B06-D7C3-4B43-BB58-85F0179E81EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagisterAPI", "Poehoe\MagisterAPI.csproj", "{04718B06-D7C3-4B43-BB58-85F0179E81EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Welp", "Welp\Welp.csproj", "{9457282F-77E0-43D2-B1C1-CCDA204A9B38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagisterAPI Tester", "Welp\MagisterAPI Tester.csproj", "{9457282F-77E0-43D2-B1C1-CCDA204A9B38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoehoeZipWin32", "PoehoeZipWin32\PoehoeZipWin32.csproj", "{46CB5515-8A15-489E-97A1-4D17E4918DB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magister ZIPWin32", "PoehoeZipWin32\Magister ZIPWin32.csproj", "{46CB5515-8A15-489E-97A1-4D17E4918DB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoehoeZipWinPhone", "PoehoeZipWinPhone\PoehoeZipWinPhone.csproj", "{D3FEDAC1-A25A-4039-83B8-B1F8F8C032D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magister ZIPWinP", "PoehoeZipWinPhone\Magister ZIPWinP.csproj", "{D3FEDAC1-A25A-4039-83B8-B1F8F8C032D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoehoeWIP", "PoehoeWIP\PoehoeWIP.csproj", "{9D8E0B9D-B067-4B31-9110-2D05AD34F9B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagisterApp WP", "PoehoeWIP\MagisterApp WP.csproj", "{9D8E0B9D-B067-4B31-9110-2D05AD34F9B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -49,13 +49,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoehoeZipWin32\PoehoeZipWin32.csproj">
+    <ProjectReference Include="..\PoehoeZipWin32\Magister ZIPWin32.csproj">
       <Project>{46cb5515-8a15-489e-97a1-4d17e4918db5}</Project>
-      <Name>PoehoeZipWin32</Name>
+      <Name>Magister ZIPWin32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Poehoe\Poehoe.csproj">
+    <ProjectReference Include="..\Poehoe\MagisterAPI.csproj">
       <Project>{04718b06-d7c3-4b43-bb58-85f0179e81eb}</Project>
-      <Name>Poehoe</Name>
+      <Name>MagisterAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
